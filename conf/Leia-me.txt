@@ -1,0 +1,8 @@
+////////////////////////
+//LIVRO CAIXA SIMPLES//
+///////////////////////
+
+//4.6
+
+Para novos usuários do sistema:
+Importe o arquivo lc-db-install.sql para que seja criado o banco de dados da aplicação.
