@@ -1,16 +1,14 @@
-﻿<?php
+<?php
 session_start();
-session_destroy(); // Destrói a sessão limpando todos os valores salvos
-include("./conf/config.php");
+session_destroy(); // Destrói a sess&atilde;o limpando todos os valores salvos
+include('./conf/config.php');
 include './conf/functions.php';
 require_once './conf/versao.php';
 
 // Formato 24 horas (de 1 a 24)
 $hora = date('G');
-if (($hora >= 0) AND ($hora < 5)) {
-$mensagem = "Já é madrugada";
-} else if (($hora >= 5) AND ($hora < 6)) {
-$mensagem = "Já esta amanhecendo";
+if (($hora >= 0) AND ($hora < 6)) {
+$mensagem = "J&aacute; &eacute; madrugada";
 } else if (($hora >= 6) AND ($hora < 12)) {
 $mensagem = "Bom dia";
 } else if (($hora >= 12) AND ($hora < 18)) {
@@ -19,20 +17,27 @@ $mensagem = "Boa tarde";
 $mensagem = "Boa noite";
 }
 ?>
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-        <title id='titulo'>Livro caixa</title>
-		<link href="./conf/img/favicon.png" rel="icon" type="image/png"/>
-        <meta name="LANGUAGE" content="Portuguese" />
-        <meta name="AUDIENCE" content="all" />
-        <meta name="RATING" content="GENERAL" />
-		<link href="./conf/css/styles.css" rel="stylesheet" type="text/css" />
-		<script LANGUAGE="JavaScript" src="./conf/js/scripts.js"></script>
-		<script src="./conf/js/jquery.js"></script>
-		<script LANGUAGE="JavaScript" src="./conf/js/jquery.validar.formulario.js"></script>
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Financas</title>
+		<link rel="stylesheet" type="text/css" href="conf/css/style.css" media="screen" />
+       
+		<link rel="stylesheet" type="text/css" href="conf/css/slide.css" media="screen" />
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+
+		<!-- PNG FIX for IE6 -->
+		<!-- http://24ways.org/2007/supersleight-transparent-png-in-ie6 -->
+		<!--[if lte IE 6]>
+        <script type="text/javascript" src="login_panel/js/pngfix/supersleight-min.js"></script>
+    <![endif]-->
+
+		<script src="conf/js/slide.js" type="text/javascript"></script>
+		<link href="conf/img/favicon.png" rel="icon" type="image/png"/>
+		<script LANGUAGE="JavaScript" src="conf/js/scripts.js"></script>
+		<script src="conf/js/jquery.js"></script>
+		<script LANGUAGE="JavaScript" src="conf/js/jquery.validar.formulario.js"></script>
 		<script>
 		function showTimer() {
 		var time=new Date();
@@ -75,22 +80,22 @@ $mensagem = "Boa noite";
 					},
 					messages: {
 						usuario: {
-							required: "Campo obrigatório.",
-							minlength: "Mínimo 4 caracteres."
+							required: "Campo obrigat&oacute;rio.",
+							minlength: "M&iacute;nimo 4 caracteres."
 						},
 						senha: {
-							required: "Campo obrigatório.",
-							minlength: "Mínimo 6 caracteres."
+							required: "Campo obrigat&oacute;rio.",
+							minlength: "M&iacute;nimo 6 caracteres."
 						},
 						nome: {
-							required: "Campo obrigatório."
+							required: "Campo obrigat&oacute;rio."
 						},
 						sobrenome: {
-							required: "Campo obrigatório."
+							required: "Campo obrigat&oacute;rio."
 						},
 						senhaconf: {
-							required: "Campo obrigatório.",
-							equalTo: "Senhas não conferem."
+							required: "Campo obrigat&oacute;rio.",
+							equalTo: "Senhas n&atilde;o conferem."
 						},
 					}
 				});
@@ -117,72 +122,117 @@ $mensagem = "Boa noite";
 			document.getElementById("passwordStrength").className = "strength" + score;
 		}
 		</script>
-    </head>
-    <body style="padding:10px" onLoad="initTimer();">
+		<style type="text/css">
+		body {
+	background-image: url(conf/img/fundo.jpg);
+	background-repeat: no-repeat;
+}
+        </style>
+		</head>
+		<body onLoad="initTimer();">
+<!-- Panel -->
+<div id="toppanel">
+          <div id="panel">
+    <div class="content clearfix">
+              <div class="left">
+        <h1> Finanças </h1>
+        <h2> Registo / Autenticação </h2>
+        <p class="grey">Estilizado por <a href="https://github.com/arteiroxyko/Financas" title="Entrar">Xyko Arteiro</a>.</p>
+      </div>
+              <div class="left"> 
+        <!-- Login Form -->
+        <form method="post" action="valida.php">
+                  <h1>Login de membro</h1>
+                  <label class="grey" for="username">Usuário:</label>
+                  <input type="text" class="form-control"  name="usuario" id="user_name" placeholder="Usuario">
+                  <label class="grey" for="password">Senha:</label>
+                  <input type="password" class="form-control" name="senha" id="password" placeholder="Senha" 
+               data-placement="before">
+                  <div class="clear"></div>
+                  <input name="Login" type="submit" class="bt_login" id="Login" value="Entrar">
+                </form>
+      </div>
+              <div class="left">
+          <a href="javascript:;" onclick="abreFecha('cad_usuario');" title="Cadastrar"   align="center" class="bt_register"> Cadastro</a><br>
+          
+    
+          
+          
+          
+        <a href="?logoff" class="bt_register">Sair</a> </div>
+              <div  style="display:none;" id="cad_usuario" class="left"> 
+        <!-- Register Form -->
+        
+        <form action="cadastro.php" method="post" class="welll" id="formulario">
+                  <input type="hidden" name="acao" value="cadastrar" />
+                  <br>
+                  Usu&aacute;rio:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type="text" name="usuario" id="usuario" size="10" maxlength="15" />
+                  <br>
+                  Nome:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type="text" name="nome" id="nome" size="20" maxlength="50" />
+                  <br>
+                  Sobrenome:
+                  <input type="text" name="sobrenome" id="sobrenome" size="20" maxlength="50" />
+                  <br>
+                  Senha:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <input type="password" name="senha" id="senha" onkeyup="passwordStrength(this.value)"/>
+                  <br>
+                  Confirmar:&nbsp;&nbsp;&nbsp;
+                  <input type="password" name="senhaconf" id="senhaconf">
+                  <br>
+                  <label for="passwordStrength"><font size=2>For&ccedil;a da senha</font></label>
+                  <div id="passwordDescription"></div>
+                  <div id="passwordStrength" class="strength0"></div>
+                  <br />
+                  <input type="submit" align="right" class="bt_login" value="Cadastrar" />
+                </form>
+      </div>
+            </div>
+  </div>
+          <!-- /login --> 
+          
+          <!-- The tab on top -->
+          <div class="tab">
+    <ul class="login">
+              <li class="left">&nbsp;</li>
+              <li><?php echo $mensagem?>! </li>
+              <li class="sep">|</li>
+              <li id="toggle"> <a id="open" class="open" href="#"><?php echo 'Abrir';?></a> <a id="close" style="display: none;" class="close" href="#">Fechar </a> </li>
+              <li class="right">&nbsp;</li>
+            </ul>
+  </div>
+          <!-- / top --> 
+          
+        </div> <div class="pageContent"><span class="tab"></span>
+<!--panel -->
 
-
-        <table cellpadding="1" cellspacing="10"  width="900" align="center" style="background-color:#033">
-
-            <tr>
-                <td colspan="11" style="background-color:#005B5B;">
-                    <h2 style="color:#FFF; margin:5px"><?php echo $mensagem ?>, seja bem vindo ao sistema Livro Caixa Simples.</h2>
-                </td>
-                <td colspan="2" align="right" style="background-color:#005B5B;">
-                    <a style="color:#FFF" title="Este sistema deve ser utilizado apenas para fins pessoais, e não contábeis." href="?mes=<?php echo date('m') ?>&ano=<?php echo date('Y') ?>">Hoje:<strong> <?php echo date('d') ?> de <?php echo mostraMes(date('m')) ?> de <?php echo date('Y') ?><br><br><span id="timer"></span></strong></a>&nbsp; 
-                </td>
-            </tr>
-        </table>
-        <br />
-        <br />
-        <table cellpadding="1" cellspacing="10"  width="900" align="center" >
-
-            <tr>
-                <td colspan="11" align="center" >
-                    <b>Faça login para acessar o sistema.</b>
-                    <br><br><br>
-                            <form method="post" action="valida.php">
-
-                                Usuário: <input type='text' name='usuario'><br><br>
-                                        Senha: <input type='password' name='senha'><br>
-                                                <br>
-                                                    <input type='submit' value='Entrar'>
-
-                                                        </form>
-														<a href="javascript:;" style="font-size:16px; color:#4169E1" onclick="abreFecha('cad_usuario');" title="Cadastrar"> Cadastrar usuario</a><br>
-														    </td>
-                                                            </tr>
-                                                            </table>
-															<table width="900" align="center">
-															<tr style="display:none; background-color:#E0E0E0" id="cad_usuario">
-															<td >
-															<b>
-															<center><br>Informe os dados do novo usuário.</center><br></b>
-															<form id="formulario" method="post" action="cadastro.php">
-															<input type="hidden" name="acao" value="cadastrar" />
-															<b>Usuário:
-															</b> <font color="#FF0000" size=2><input type="text" name="usuario" id="usuario" size="10" maxlength="15" /></font><br><br>
-															<b>Nome:</b> <font color="#FF0000" size=2><input type="text" name="nome" id="nome" size="20" maxlength="100" /></font>
-															<b>Sobrenome:</b> <font color="#FF0000" size=2><input type="text" name="sobrenome" id="sobrenome" size="40" maxlength="100" /></font>
-															<br><br>
-															<b>Senha:</b> <font color="#FF0000" size=2><input type="password" name="senha" id="senha" onkeyup="passwordStrength(this.value)"/></font>
-															<b>Confirmar:</b> <font color="#FF0000" size=2><input type="password" name="senhaconf" id="senhaconf"></font>&nbsp;
-															<br>
-															<label for="passwordStrength"><font size=2>Força da senha</font></label><br>
-															<div id="passwordDescription"></div>
-															<div id="passwordStrength" class="strength0"></div>
-															<center>
-															<input type="submit" class="input" value="Cadastrar" />
-															</form>
-															</td>
-															</tr>
-															</table>
-                                                            <table cellpadding="5" cellspacing="0" width="900" align="center">
-                                                                <tr>
-                                                                    <td align="right">
-                                                                        <hr size="2" />
-                                                                        <em><?php echo "$desenvolvedor $versao"?></em>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                            </body>
-                                                            </html>
+<?php /*?>
+          <table width="30%" border="0" align="center" cellpadding="0">
+  <tr>
+    <th scope="col">&nbsp; <a href="javascript:;" style="font-size:16px; color:#FFFFFF" onclick="abreFecha('cad_usuario');" title="Cadastrar" class="btn btn-success"  align="center"> Cadastrar usu&aacute;rio</a><br></th>
+  </tr>
+</table>
+<?php */?>
+</div>
+<div >
+<div id="main">
+  <div class="container">
+    <h1>Sistema de Autenticação</h1>
+    <h2>Sistema de registro de movimento Financeiro</h2>
+</div>
+          <div class="container">
+    <div>
+              <center>
+        <br>
+        <?php echo " <img src='conf/img/arteiro.png' width='100px'> "?>
+      </center>
+              </form>
+            </div>
+    <div class="clear"></div>
+    <div class="container tutorial-info"> <?php echo "$desenvolvedor $versao"?> </div>
+  </div>
+        </div>
+        
+</body>
+</html>

@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /*******************************************************************************
 * FPDF                                                                         *
 *                                                                              *
@@ -424,6 +424,7 @@ function GetStringWidth($s)
 {
 	// Get width of a string in the current font
 	$s = (string)$s;
+
 	$cw = &$this->CurrentFont['cw'];
 	$w = 0;
 	$l = strlen($s);
@@ -583,6 +584,7 @@ function Text($x, $y, $txt)
 {
 	// Output a string
 	$s = sprintf('BT %.2F %.2F Td (%s) Tj ET',$x*$this->k,($this->h-$y)*$this->k,$this->_escape($txt));
+
 	if($this->underline && $txt!='')
 		$s .= ' '.$this->_dounderline($x,$y,$txt);
 	if($this->ColorFlag)
@@ -1581,6 +1583,7 @@ function _putfonts()
 			$this->_out('/FirstChar 32 /LastChar 255');
 			$this->_out('/Widths '.($this->n+1).' 0 R');
 			$this->_out('/FontDescriptor '.($this->n+2).' 0 R');
+
 			if(isset($font['diffn']))
 				$this->_out('/Encoding '.($nf+$font['diffn']).' 0 R');
 			else

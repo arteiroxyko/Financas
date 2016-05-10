@@ -95,19 +95,19 @@ $('.image-switch').addClass('active');
 </head>
 
 <body style="padding:10px">
-<br />
-<table cellpadding="1" cellspacing="10"  width="1000" align="center" style="background-color:#033">
+
+<table  width="100%" align="center" cellpadding="1" cellspacing="5"   background="../conf/img/menubar_bg.gif" class="we">
 <tr>
-<td colspan="11" style="background-color:#005B5B;">
-<h2 style="margin:5px"><a href=../index.php style="color:#008B8B">Conta Corrente</a> | <a href=../visa.php style="color:#008B8B">Cartão Visa</a> | <a href=../master.php style="color:#008B8B">Cartão Master</a> | <a href=graficos.php style="color:#FFF">Dashboard</a></h2>
+<td colspan="11"  align="center" valign="middle" >          
+  <h2><a href=../index.php style="color:#FFFFFF"> Financeiro</a> | <a href=./dashboard/dashboard.php style="color:#FFFF00">Dashboard</a></h2>
 </td>
-<td colspan="2" align="right" style="background-color:#005B5B;">
+<td colspan="2" align="right">
 <a style="color:#FFF" href="?mes=<?php echo date('m')?>&ano=<?php echo date('Y')?>">Hoje:<strong> <?php echo date('d')?> de <?php echo mostraMes(date('m'))?> de <?php echo date('Y')?></strong></a>&nbsp; 
 </td>
 </tr>
 <tr>
-<td width="70">
-<select onchange="location.replace('?mes=<?php echo $mes_hoje?>&ano='+this.value)">
+<td>
+<select onChange="location.replace('?mes=<?php echo $mes_hoje?>&ano='+this.value)">
 <?php
 for ($i=2015;$i<=2020;$i++){
 ?>
@@ -118,12 +118,12 @@ for ($i=2015;$i<=2020;$i++){
 <?php
 for ($i=1;$i<=12;$i++){
 	?>
-    <td align="center" style="<?php if ($i!=12) echo "border-right:1px solid #FFF;"?> padding-right:5px">
+    <td align="center" style="<?php if ($i!=12) echo "border-right:1px solid #FFFFFF;"?> padding-right:5px">
     <a href="?mes=<?php echo $i?>&ano=<?php echo $ano_hoje?>" style="
     <?php if($mes_hoje==$i){?>    
-    color:#033; font-size:16px; font-weight:bold; background-color:#FFF; padding:5px
+    color:#448ED3; font-size:16px; font-weight:bold; background-color:#FFFFFF; padding:5px
     <?php }else{?>
-    color:#FFF; font-size:16px;
+    color:#FFFFFF;  font-size:16px;
     <?php }?>
     ">
     <?php echo mostraMes($i);?>
@@ -134,50 +134,52 @@ for ($i=1;$i<=12;$i++){
 ?>
 </tr>
 </table>
-<table cellpadding="5" cellspacing="0" width="1000" align="center">
+<table cellpadding="5" cellspacing="0" width="1000" align="center" class="well">
 <tr>
 <td><font size=3 color="#000"><center><?php echo $mensagem?><?php echo " "?><?php echo $_SESSION['usuarioNome'];?><?php echo " "?><?php echo $_SESSION['usuarioSobrenome'];?>, este é o seu Dashboard.</center></font></b>
 </td>
 <td align="right" style="font-size:13px; color:rgba(4, 45, 191, 1)">
-<a href=../logout.php style="font-size:12px; color:rgba(4, 45, 191, 1)"><?php echo " [ Fazer logout ]"?></a>
+<a href=../logout.php style="font-size:12px; color:rgba(4, 45, 191, 1)"><img src="../conf/img/sair.png" alt="Sair" width="30" height="30"><?php echo " "?></a>
 </td>
 </tr>
 </table>
 <br />
-<center><font size=5><b>Dashboard para análise de movimentos lançados no Sistema Livro Caixa Simples.</font></center><br />
+<center>
+  <font size=5><b>Dashboard para análise de movimentos lançados no Sistema Financas.</font>
+</center><br />
 
 <?php
 //SAIDAS E ENTRADAS MES
-$qr=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=1 AND conta=1 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje'");
-$row=mysqli_fetch_array($qr);
+$qr=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=1 AND conta=1 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje'");
+$row=mysql_fetch_array($qr);
 $entradas=$row['total'];
-$qr=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje'");
-$row=mysqli_fetch_array($qr);
+$qr=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje'");
+$row=mysql_fetch_array($qr);
 $saidas=$row['total'];
 //SAIDAS E ENTRADAS ANO
-$qr2=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=1 AND conta=1 AND usuario='$usuario' AND ano='$ano_hoje'");
-$row2=mysqli_fetch_array($qr2);
+$qr2=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=1 AND conta=1 AND usuario='$usuario' AND ano='$ano_hoje'");
+$row2=mysql_fetch_array($qr2);
 $entradasano=$row2['total'];
-$qr2=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND ano='$ano_hoje'");
-$row2=mysqli_fetch_array($qr2);
+$qr2=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND ano='$ano_hoje'");
+$row2=mysql_fetch_array($qr2);
 $saidasano=$row2['total'];
 //SAIDAS E ENTRADAS MES TODAS AS CONTAS
-$qr3=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje'");
-$row3=mysqli_fetch_array($qr3);
+$qr3=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje'");
+$row3=mysql_fetch_array($qr3);
 $gastoscctotal=$row3['total'];
-$qr3=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=2 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje'");
-$row3=mysqli_fetch_array($qr3);
+$qr3=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=2 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje'");
+$row3=mysql_fetch_array($qr3);
 $gastosccv=$row3['total'];
-$qr3=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=3 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje'");
-$row3=mysqli_fetch_array($qr3);
+$qr3=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=3 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje'");
+$row3=mysql_fetch_array($qr3);
 $gastosccm=$row3['total'];
 //calcular o valor total gasto na conta corrente
 $mescalculo=$mes_hoje-1;
-$qr3=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=2 AND usuario='$usuario' AND mes='$mescalculo' AND ano='$ano_hoje'");
-$row3=mysqli_fetch_array($qr3);
+$qr3=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=2 AND usuario='$usuario' AND mes='$mescalculo' AND ano='$ano_hoje'");
+$row3=mysql_fetch_array($qr3);
 $gastosccvmant=$row3['total'];
-$qr3=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=3 AND usuario='$usuario' AND mes='$mescalculo' AND ano='$ano_hoje'");
-$row3=mysqli_fetch_array($qr3);
+$qr3=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=3 AND usuario='$usuario' AND mes='$mescalculo' AND ano='$ano_hoje'");
+$row3=mysql_fetch_array($qr3);
 $gastosccmmant=$row3['total'];
 $gastoscccalculo=$gastoscctotal-$gastosccvmant-$gastosccmmant;
 if ($gastoscccalculo<0){
@@ -186,14 +188,14 @@ if ($gastoscccalculo<0){
 	$gastoscc=$gastoscccalculo;
 }
 //SAIDAS E ENTRADAS TODAS AS CONTAS ANO
-$qr3=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND mes<='$mes_hoje' AND ano='$ano_hoje'");
-$row3=mysqli_fetch_array($qr3);
+$qr3=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND mes<='$mes_hoje' AND ano='$ano_hoje'");
+$row3=mysql_fetch_array($qr3);
 $gastosccano=$row3['total'];
-$qr3=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=2 AND usuario='$usuario' AND mes<='$mes_hoje' AND ano='$ano_hoje'");
-$row3=mysqli_fetch_array($qr3);
+$qr3=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=2 AND usuario='$usuario' AND mes<='$mes_hoje' AND ano='$ano_hoje'");
+$row3=mysql_fetch_array($qr3);
 $gastosccvano=$row3['total'];
-$qr3=mysqli_query($_SG['conexao'], "SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=3 AND usuario='$usuario' AND mes<='$mes_hoje' AND ano='$ano_hoje'");
-$row3=mysqli_fetch_array($qr3);
+$qr3=mysql_query("SELECT SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=3 AND usuario='$usuario' AND mes<='$mes_hoje' AND ano='$ano_hoje'");
+$row3=mysql_fetch_array($qr3);
 $gastosccmano=$row3['total'];
 
 //PROGRESSÃO ENTRADAS
@@ -202,8 +204,8 @@ $totalemat=array();
 $i1=0;
 $mescalc=1;
 while ($mescalc<=$mes_hoje){
-$qrcem=mysqli_query($_SG['conexao'], "SELECT mes, SUM(valor) as total FROM movimentos WHERE tipo=1 AND conta=1 AND usuario='$usuario' AND mes='$mescalc' AND ano='$ano_hoje' GROUP BY mes");
-$rowcem=mysqli_fetch_array($qrcem);
+$qrcem=mysql_query("SELECT mes, SUM(valor) as total FROM movimentos WHERE tipo=1 AND conta=1 AND usuario='$usuario' AND mes='$mescalc' AND ano='$ano_hoje' GROUP BY mes");
+$rowcem=mysql_fetch_array($qrcem);
 $entradas=$rowcem['total'];
 $mesrt=$rowcem['mes'];
 $mescalc++;
@@ -218,8 +220,8 @@ $totalsmat=array();
 $i1=0;
 $mescalc1=1;
 while ($mescalc1<=$mes_hoje){
-$qrcsm=mysqli_query($_SG['conexao'], "SELECT mes, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND mes='$mescalc1' AND ano='$ano_hoje' GROUP BY mes");
-$rowcsm=mysqli_fetch_array($qrcsm);
+$qrcsm=mysql_query("SELECT mes, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND mes='$mescalc1' AND ano='$ano_hoje' GROUP BY mes");
+$rowcsm=mysql_fetch_array($qrcsm);
 $saidasw=$rowcsm['total'];
 $mescalc1++;
 $totalsmat[$i1]=$saidasw;
@@ -232,8 +234,8 @@ $totalcartaov=array();
 $i4=0;
 $mescalculocartao=1;
 while ($mescalculocartao<=$mes_hoje){
-$qrcart=mysqli_query($_SG['conexao'], "SELECT mes, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=2 AND usuario='$usuario' AND mes='$mescalculocartao' AND ano='$ano_hoje' GROUP BY mes");
-$rowcart=mysqli_fetch_array($qrcart);
+$qrcart=mysql_query("SELECT mes, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=2 AND usuario='$usuario' AND mes='$mescalculocartao' AND ano='$ano_hoje' GROUP BY mes");
+$rowcart=mysql_fetch_array($qrcart);
 $comprasv=$rowcart['total'];
 $mesrc=$rowcart['mes'];
 $mescalculocartao++;
@@ -247,8 +249,8 @@ $totalcartaom=array();
 $i4=0;
 $mescalculocartao1=1;
 while ($mescalculocartao1<=$mes_hoje){
-$qrcart2=mysqli_query($_SG['conexao'], "SELECT mes, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=3 AND usuario='$usuario' AND mes='$mescalculocartao1' AND ano='$ano_hoje' GROUP BY mes");
-$rowcart2=mysqli_fetch_array($qrcart2);
+$qrcart2=mysql_query("SELECT mes, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=3 AND usuario='$usuario' AND mes='$mescalculocartao1' AND ano='$ano_hoje' GROUP BY mes");
+$rowcart2=mysql_fetch_array($qrcart2);
 $comprasm=$rowcart2['total'];
 $mescalculocartao1++;
 $totalcartaom[$i4]=$comprasm;
@@ -259,11 +261,11 @@ $i4=$i4+1;
 $catmessaida=array();
 $totalcatmesesaida=array();
 $i3=0;
-$qrcatmesesaida=mysqli_query($_SG['conexao'], "SELECT cat, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje' GROUP BY cat");
-while ($rowcatemesesaida=mysqli_fetch_array($qrcatmesesaida)){
+$qrcatmesesaida=mysql_query("SELECT cat, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=1 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje' GROUP BY cat");
+while ($rowcatemesesaida=mysql_fetch_array($qrcatmesesaida)){
 $cat2=$rowcatemesesaida['cat'];
-$qr3=mysqli_query($_SG['conexao'], "SELECT nome FROM categorias WHERE id='$cat2'");
-$row3=mysqli_fetch_array($qr3);
+$qr3=mysql_query("SELECT nome FROM categorias WHERE id='$cat2'");
+$row3=mysql_fetch_array($qr3);
 $categoriasaida=$row3['nome'];
 $valorcatsaida=$rowcatemesesaida['total'];
 $catmesesaida[$i3]=$categoriasaida;
@@ -275,11 +277,11 @@ $i3=$i3+1;
 $catmese=array();
 $totalcatmese=array();
 $i2=0;
-$qrcatmese=mysqli_query($_SG['conexao'], "SELECT cat, SUM(valor) as total FROM movimentos WHERE tipo=1 AND conta=1 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje' GROUP BY cat");
-while ($rowcatemese=mysqli_fetch_array($qrcatmese)){
+$qrcatmese=mysql_query("SELECT cat, SUM(valor) as total FROM movimentos WHERE tipo=1 AND conta=1 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje' GROUP BY cat");
+while ($rowcatemese=mysql_fetch_array($qrcatmese)){
 $cat=$rowcatemese['cat'];
-$qr2=mysqli_query($_SG['conexao'], "SELECT nome FROM categorias WHERE id='$cat'");
-$row2=mysqli_fetch_array($qr2);
+$qr2=mysql_query("SELECT nome FROM categorias WHERE id='$cat'");
+$row2=mysql_fetch_array($qr2);
 $categoria=$row2['nome'];
 $valorcat=$rowcatemese['total'];
 $catmese[$i2]=$categoria;
@@ -291,11 +293,11 @@ $i2=$i2+1;
 $catcartaov=array();
 $totalcatcartaov=array();
 $i5=0;
-$qrcatcartaov=mysqli_query($_SG['conexao'], "SELECT cat, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=2 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje' GROUP BY cat");
-while ($rowcatcartaov=mysqli_fetch_array($qrcatcartaov)){
+$qrcatcartaov=mysql_query("SELECT cat, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=2 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje' GROUP BY cat");
+while ($rowcatcartaov=mysql_fetch_array($qrcatcartaov)){
 $catcv1=$rowcatcartaov['cat'];
-$qrcatcv1=mysqli_query($_SG['conexao'], "SELECT nome FROM categorias WHERE id='$catcv1'");
-$rowcv3=mysqli_fetch_array($qrcatcv1);
+$qrcatcv1=mysql_query("SELECT nome FROM categorias WHERE id='$catcv1'");
+$rowcv3=mysql_fetch_array($qrcatcv1);
 $categoriacv=$rowcv3['nome'];
 $valorcatcv=$rowcatcartaov['total'];
 $catcartaov[$i5]=$categoriacv;
@@ -306,11 +308,11 @@ $i5=$i5+1;
 $catcartaom=array();
 $totalcatcartaom=array();
 $i6=0;
-$qrcatcartaom=mysqli_query($_SG['conexao'], "SELECT cat, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=3 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje' GROUP BY cat");
-while ($rowcatcartaom=mysqli_fetch_array($qrcatcartaom)){
+$qrcatcartaom=mysql_query("SELECT cat, SUM(valor) as total FROM movimentos WHERE tipo=0 AND conta=3 AND usuario='$usuario' AND mes='$mes_hoje' AND ano='$ano_hoje' GROUP BY cat");
+while ($rowcatcartaom=mysql_fetch_array($qrcatcartaom)){
 $catcm2=$rowcatcartaom['cat'];
-$qrcatcm2=mysqli_query($_SG['conexao'], "SELECT nome FROM categorias WHERE id='$catcm2'");
-$rowcm3=mysqli_fetch_array($qrcatcm2);
+$qrcatcm2=mysql_query("SELECT nome FROM categorias WHERE id='$catcm2'");
+$rowcm3=mysql_fetch_array($qrcatcm2);
 $categoriacm=$rowcm3['nome'];
 $valorcatcm=$rowcatcartaom['total'];
 $catcartaom[$i6]=$categoriacm;
@@ -560,25 +562,12 @@ $i6=$i6+1;
 </td>
 </tr>
 <tr>
-<td><small><b>Percentual de entradas por categoria.</small>
-<div id="piechart2" style="width: 500px; height: 300px;"></div>
-</td>
-<td><small><b>Percentual de saídas por categoria.</small>
-<div id="piechart" style="width: 500px; height: 300px;"></div>
-</td>
-</tr>
-<tr>
-<td colspan="4"><small><b>Progressão do uso dos cartões de crédito.</small>
-<div id="curve_chart" style="width: 900px; height: 500px"></div>
-</td>
-</tr>
-<tr>
-<td align="left"><small><b>Consumo mensal do cartão de crédito por categoria.</small>
-<div id="piechart5" style="width: 500px; height: 300px;"></div>
-</td>
-<td align="left"><small><b>Consumo mensal do cartão de crédito por categoria.</small>
-<div id="piechart6" style="width: 500px; height: 300px;"></div>
-</td>
+  <td><small><b>Percentual de entradas por categoria.</small>
+  <div id="piechart2" style="width: 500px; height: 300px;"></div>
+  </td>
+  <td><small><b>Percentual de saídas por categoria.</small>
+  <div id="piechart" style="width: 500px; height: 300px;"></div>
+  </td>
 </tr>
 </table>
 </body>

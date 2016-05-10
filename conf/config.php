@@ -17,8 +17,8 @@ $_SG['validaSempre'] = false;       // Evitar que, ao mudar os dados do usuário
 $_SG['servidor'] = 'localhost';    // Servidor MySQL
 $_SG['usuario'] = 'root';          // Usuário MySQL
 $_SG['senha'] = '';          // Senha MySQL
-$_SG['banco'] = 'livrocaixa';         // Banco de dados MySQL
-$_SG['paginaLogin'] = './login.php'; // Página de login
+$_SG['banco'] = 'financas';        // Banco de dados MySQL
+$_SG['paginaLogin'] = 'login.php'; // Página de login
 $_SG['tabela'] = 'usuarios';       // Nome da tabela do db onde os usuários são cadastrados.
 
 // ===============================
@@ -27,13 +27,13 @@ $_SG['tabela'] = 'usuarios';       // Nome da tabela do db onde os usuários sã
 
 // Verifica se precisa fazer a conexão com o MySQL
 if ($_SG['conectaServidor'] == true) {
-  $_SG['conexao'] = @mysqli_connect($_SG['servidor'], $_SG['usuario'], $_SG['senha'], $_SG['banco']) or die("MySQL: Não foi possível conectar-se ao servidor e ao banco de dados.");
-  mysqli_query($_SG['conexao'],"SET NAMES 'utf8'");
-  mysqli_query($_SG['conexao'],'SET character_set_connection=utf8');
-  mysqli_query($_SG['conexao'],'SET character_set_client=utf8');
-  mysqli_query($_SG['conexao'],'SET character_set_results=utf8');
+  $_SG['link'] = mysql_connect($_SG['servidor'], $_SG['usuario'], $_SG['senha']) or die("MySQL: Não foi possível conectar-se ao servidor.");
+  mysql_select_db($_SG['banco'], $_SG['link']) or die("MySQL: Não foi possível conectar-se ao banco de dados.");
+  mysql_query("SET NAMES 'utf8'");
+  mysql_query('SET character_set_connection=utf8');
+  mysql_query('SET character_set_client=utf8');
+  mysql_query('SET character_set_results=utf8');
 }
-
 // Verifica se precisa iniciar a sessão
 if ($_SG['abreSessao'] == true)
   session_start();
@@ -43,7 +43,7 @@ if ($_SG['abreSessao'] == true)
 * @param string $usuario - O usuário a ser validado
 * @param string $senha - A senha a ser validada
 *
-* @return bool - Se o usuário foi validado ou não (true/false)
+* @return bool - Se o usuário foi validado ou n&atilde;o (true/false)
 */
 function validaUsuario($usuario, $senha) {
   global $_SG;
@@ -52,8 +52,9 @@ function validaUsuario($usuario, $senha) {
   $nusuario = addslashes($usuario);
   $nsenha = addslashes($senha);
   // Monta uma consulta SQL (query) para procurar um usuário compativel com os dados fornecidos na tela de login, e interpretar a criptografia SHA1.
-  $query = mysqli_query ($_SG['conexao'], "SELECT `id`, `nome`, `sobrenome` FROM `".$_SG['tabela']."` WHERE ".$cS." `usuario` = '".$nusuario."' AND ".$cS." `senha` = SHA2('".$nsenha."',512) LIMIT 1");
-  $resultado = mysqli_fetch_assoc ($query);
+  $sql = "SELECT `id`, `nome`, `sobrenome` FROM `".$_SG['tabela']."` WHERE ".$cS." `usuario` = '".$nusuario."' AND ".$cS." `senha` = SHA1('".$nsenha."') LIMIT 1";
+  $query = mysql_query($sql);
+  $resultado = mysql_fetch_assoc($query);
   // Verifica se encontrou algum registro
   if (empty($resultado)) {
     // Nenhum registro foi encontrado => o usuário é inválido
@@ -85,7 +86,7 @@ function protegePagina() {
     if ($_SG['validaSempre'] == true) {
       // Verifica se os dados salvos na sessão batem com os dados do banco de dados
       if (!validaUsuario($_SESSION['usuarioLogin'], $_SESSION['usuarioSenha'])) {
-        // Os dados não batem, manda pra tela de login
+        // Os dados n&atilde;o batem, manda pra tela de login
         expulsaVisitante();
       }
     }

@@ -39,7 +39,7 @@ $this->AliasNbPages();
 $this->SetTextColor(0,0,0);
 $this->Cell(0,0.6,utf8_decode("* Atenção: movimentos sem descrição da categoria podem ser exibidos, devido exclusão desta, da base de dados do sistema."),0,1,'L');
 $this->SetFont('Arial','I',7);
-$this->Cell(0,0.2,utf8_decode("Origem de dados: Livro Caixa.  Usuário: $nome.      |    Classe FPDF"),0,0,'L');
+$this->Cell(0,0.2,utf8_decode("Origem de dados: Movimento Financeiro Loja Jaqueline Arteira.   |     Usuário: $nome.    "),0,0,'L');
 $this->Cell(0,0.2,utf8_decode("Página ").$this->PageNo().'/{nb}',0,0,'R');
 
 }
@@ -53,15 +53,15 @@ $pdf->SetTextColor(0,0,255);
 $pdf->Cell(19,1,utf8_decode("Relatório de exclusões de movimentos."),0,1,'C',0);
 $pdf->Ln(0.7);
 
-$qrv=mysqli_query($_SG['conexao'], "SELECT * FROM exclusoes WHERE conta_mov='$conta' && usuario_mov='$usuario' ORDER By id DESC");
-if (mysqli_num_rows($qrv)!==0){
+$qrv=mysql_query("SELECT * FROM exclusoes WHERE conta_mov='$conta' && usuario_mov='$usuario' ORDER By id DESC");
+if (mysql_num_rows($qrv)!==0){
 
-$qrg=mysqli_query($_SG['conexao'], "SELECT SUM(valor_mov) as total FROM exclusoes WHERE tipo_mov=1 && conta_mov='$conta' && usuario_mov='$usuario'");
-$rowg=mysqli_fetch_array($qrg);
+$qrg=mysql_query("SELECT SUM(valor_mov) as total FROM exclusoes WHERE tipo_mov=1 && conta_mov='$conta' && usuario_mov='$usuario'");
+$rowg=mysql_fetch_array($qrg);
 $entradas=$rowg['total'];
 
-$qrg=mysqli_query($_SG['conexao'], "SELECT SUM(valor_mov) as total FROM exclusoes WHERE tipo_mov=0 && conta_mov='$conta' && usuario_mov='$usuario'");
-$rowg=mysqli_fetch_array($qrg);
+$qrg=mysql_query("SELECT SUM(valor_mov) as total FROM exclusoes WHERE tipo_mov=0 && conta_mov='$conta' && usuario_mov='$usuario'");
+$rowg=mysql_fetch_array($qrg);
 $saidas=$rowg['total'];
 
 $entradasexc=formata_dinheiro($entradas);
@@ -77,12 +77,12 @@ $pdf->Cell(1.9,0.6,'Data',0,1,'L',1);
 
 //Exclusões
 $cont=0;
-while ($row=mysqli_fetch_array($qrv)){
+while ($row=mysql_fetch_array($qrv)){
 $cont++;
 
 $cat=$row['cat_mov'];
-$qr2=mysqli_query($_SG['conexao'], "SELECT nome FROM categorias WHERE id='$cat'");
-$row2=mysqli_fetch_array($qr2);
+$qr2=mysql_query("SELECT nome FROM categorias WHERE id='$cat'");
+$row2=mysql_fetch_array($qr2);
 $categoria=$row2['nome'];
 $valor=formata_dinheiro($row['valor_mov']);
 $tipo=$row['tipo_mov'];
